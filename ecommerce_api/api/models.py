@@ -19,7 +19,18 @@ class Order(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     product=models.ManyToManyField(Product)
     date_created=models.DateTimeField(auto_now_add=True)
+    @property
+    def products(self):
+        return self.product.count()
+    @property
+    def price(self):
+        total=0
+        for p in self.product.all():
+            total+=p.price
+        return total*self.products
+    
+    
     def __str__(self):
-        return f'{self.user.username} ({self.date_created})'
+        return f"{self.user}"
     
     
